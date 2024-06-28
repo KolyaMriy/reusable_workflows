@@ -1,0 +1,13 @@
+name: 'Flutter Test Action'
+description: 'Run Flutter tests'
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.19.6'
+
+    - name: Run Flutter Test
+      run: flutter test
+      shell: bash

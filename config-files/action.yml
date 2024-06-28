@@ -1,0 +1,33 @@
+name: 'Checkout and copy config files'
+description: Checkout repository
+inputs:
+  environment:
+    description: 'Folder with Firebase configuration'
+    required: true
+  env_vars:
+    description: 'For flutter'
+    required: true
+  versionName:
+    description: 'Version name'
+    required: false
+    default: '0.100.0'
+
+runs:
+  using: composite
+  steps:
+    - name: Update pubspec.yaml version on macOS
+      run: |
+        sed -i '' "s/^version: .*/version: \${{ inputs.versionName }}/" pubspec.yaml
+      if: runner.os == 'macOS'
+      shell: bash
+
+    - name: Copy Files
+      run: |
+        cp environments/${{ inputs.environment }}/firebase_options.dart lib/
+        cp environments/${{ inputs.environment }}/android/google-services.json android/app/
+        cp environments/${{ inputs.environment }}/ios/firebase_app_id_file.json ios/
+        cp environments/${{ inputs.environment }}/ios/Info.plist ios/Runner
+        cp environments/${{ inputs.environment }}/ios/GoogleService-Info.plist ios/Runner
+        echo "${{ inputs.env_vars }}" > lib/env_vars.dart
+        echo "const versionName = '${{ inputs.versionName }}';" >> lib/env_vars.dart
+      shell: bash

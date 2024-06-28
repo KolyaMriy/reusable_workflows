@@ -1,0 +1,73 @@
+name: 'Build ipa'
+description: Build ipa
+inputs:
+  cert:
+    description: 'Base64 encoded Certificate'
+    required: true
+  pass:
+    description: 'Password for the Certificate'
+    required: true
+  prof:
+    description: 'Base64 encoded Profile'
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        flutter-version: 3.19.0
+
+    - name: Install dependencies
+      run: |
+        flutter clean
+        flutter pub get
+        cd ios
+        pod update Firebase/CoreOnly
+      shell: bash
+
+    - name: Install CocoaPods Dependencies
+      run: |
+        cd ios
+        pod install --repo-update
+      shell: bash
+
+    - name: Install Apple Certificate
+      uses: apple-actions/import-codesign-certs@v3
+      with:
+        p12-file-base64: ${{ inputs.cert }}
+        p12-password: ${{ inputs.pass }}
+
+    - name: Install the provisioning profile
+      run: |
+        PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+        echo -n "${{ inputs.prof }}" | base64 --decode --output $PP_PATH
+        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+        cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+      shell: bash
+
+    - name: Build Flutter app
+      run: flutter build ios --release --no-codesign --no-tree-shake-icons
+      shell: bash
+
+    - name: Build resolve Swift dependencies
+      run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release
+      shell: bash
+
+    - name: Build xArchive
+      run: |
+        xcodebuild -workspace ios/Runner.xcworkspace \
+        -scheme Runner \
+        -configuration Release \
+        DEVELOPMENT_TEAM=798XW2VR6J \
+        -sdk 'iphoneos' \
+        -destination 'generic/platform=iOS' \
+        -archivePath build-output/app.xcarchive \
+        clean archive \
+        CODE_SIGN_IDENTITY="Apple Distribution: INFOBEZPEKA, TOV (798XW2VR6J)"
+      shell: bash
+
+    - name: Export ipa
+      run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/ExportOptions.plist
+      shell: bash

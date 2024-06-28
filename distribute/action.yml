@@ -1,0 +1,24 @@
+name: 'Distribute APK'
+description: Distribute APK
+inputs:
+  firebaseToken:
+    description: 'Firebase CI Token'
+    required: true
+  firebaseAppId:
+    description: 'Firebase App ID'
+    required: true
+  path:
+    description: 'file path'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Distribute to Firebase App Distribution
+      run: |
+        firebase appdistribution:distribute ${{ inputs.path }} \
+        --app ${{ inputs.firebaseAppId }} \
+        --groups "MazalTov"
+      env:
+        FIREBASE_TOKEN: ${{ inputs.firebaseToken }}
+      shell: bash

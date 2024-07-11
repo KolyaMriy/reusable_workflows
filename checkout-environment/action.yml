@@ -15,6 +15,9 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
     - name: Update pubspec.yaml version on macOS
       run: |
         sed -i '' "s/^version: .*/version: \${{ inputs.versionName }}/" pubspec.yaml

@@ -1,9 +1,6 @@
 name: 'Integration test'
 description: 'Integration test'
 inputs:
-  keystore:
-    description: 'Base64 encoded Keystore'
-    required: true
   keyPassword:
     description: 'Key Password'
     required: true
@@ -16,10 +13,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Decode Keystore
-      run: echo "${{ inputs.keystore }}" | base64 --decode > android/app/key.jks
-      shell: bash
-
     - name: Build AndroidTest
       run: ./gradlew app:assembleAndroidTest
       working-directory: android

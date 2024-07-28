@@ -26,5 +26,5 @@ runs:
       shell: bash
 
     - name: Run Python Tests
-      run: pytest integration_tests
+      run: pytest ${{ inputs.test-folder }}
       shell: bash

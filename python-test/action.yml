@@ -6,12 +6,23 @@ inputs:
     description: 'Folder to run tests in'
     required: false
     default: 'tests'
+  adminsdk:
+    description: 'Firebase adminsdk'
+    required: false
+    default: ''
 
 runs:
   using: 'composite'
   steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
+
+    - name: Set up Firebase credentials
+      if: ${{ inputs.adminsdk != '' }}
+      run: |
+        mkdir .adminsdk
+        echo "${{ inputs.adminsdk }}" | base64 --decode > .adminsdk/adminsdk.json
+      shell: bash
 
     - name: Set up Python 3.12.3
       uses: actions/setup-python@v3

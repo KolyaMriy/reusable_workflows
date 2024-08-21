@@ -1,24 +1,28 @@
 name: 'Distribute APK'
 description: Distribute APK
 inputs:
-  firebaseToken:
-    description: 'Firebase CI Token'
+  serviceAccount:
+    description: 'Firebase Service Account (JSON)'
     required: true
   firebaseAppId:
     description: 'Firebase App ID'
     required: true
   path:
-    description: 'file path'
+    description: 'File path'
     required: true
 
 runs:
   using: composite
   steps:
+    - name: Write Service Account JSON to a file
+      run: echo "${{ inputs.serviceAccount }}" > /tmp/service-account.json
+      shell: bash
+
     - name: Distribute to Firebase App Distribution
       run: |
         firebase appdistribution:distribute ${{ inputs.path }} \
         --app ${{ inputs.firebaseAppId }} \
         --groups "MazalTov"
       env:
-        FIREBASE_TOKEN: ${{ inputs.firebaseToken }}
+        GOOGLE_APPLICATION_CREDENTIALS: /tmp/service-account.json
       shell: bash

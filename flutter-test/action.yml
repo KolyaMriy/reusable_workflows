@@ -13,5 +13,7 @@ runs:
         flutter-version: 3.24.1
 
     - name: Run Flutter Test
-      run: flutter test
+      run: |
+        dart run localizely_sdk:generate
+        flutter test
       shell: bash

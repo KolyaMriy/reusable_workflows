@@ -20,9 +20,11 @@ runs:
 
     - name: Update pubspec.yaml version on macOS
       run: |
-        sed -i '' "s/^version: .*/version: \${{ inputs.versionName }}/" pubspec.yaml
+        sed -i '' "s/^version: .*/version: ${VERSION_NAME}/" pubspec.yaml
       if: runner.os == 'macOS'
       shell: bash
+      env:
+        VERSION_NAME: ${{ inputs.versionName }}
 
     - name: Copy Files
       run: |

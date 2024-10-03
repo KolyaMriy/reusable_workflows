@@ -10,7 +10,7 @@ inputs:
   versionName:
     description: 'Version name'
     required: false
-    default: '0.100.0'
+    default: '1.0.0'
 
 runs:
   using: composite

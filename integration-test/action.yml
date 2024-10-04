@@ -20,6 +20,7 @@ runs:
       env:
         KEY_PASSWORD: ${{ inputs.keyPassword }}
         KEY_ALIAS: ${{ inputs.keyAlias }}
+        VERSION_NAME: 100.0.0
 
     - name: Build Debug APK
       run: ./gradlew app:assembleDebug -Ptarget=`pwd`/../integration_test/${{ inputs.test }}.dart
@@ -28,6 +29,7 @@ runs:
       env:
         KEY_PASSWORD: ${{ inputs.keyPassword }}
         KEY_ALIAS: ${{ inputs.keyAlias }}
+        VERSION_NAME: 100.0.0
 
     - name: Run tests in Firebase Test Lab
       run: |

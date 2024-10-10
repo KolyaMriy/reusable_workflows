@@ -18,7 +18,8 @@ jobs:
           }')
           echo "$JSON_PAYLOAD" > output.json
 
-      - name: Debug JSON
+      - name: Send JSON
         run: |
-          echo "Contents of output.json:"
-          cat output.json
+          curl -X POST ${{ vars.TELEGRAM_REPORTS_PATH }} \
+          -H "Content-Type: application/json" \
+          --data-binary @output.json

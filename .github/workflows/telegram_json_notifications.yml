@@ -9,9 +9,13 @@ jobs:
     steps:
       - name: Prepare JSON
         run: |
-          JSON_PAYLOAD=$(echo '{
-            "message": "❌ GitHub Workflow Notification: Workflow '\''${{ github.workflow }}'\'' from repository '\''${{ github.repository }}'\'' failed. View details at: '\''${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'\''
-          }')
+          JSON_PAYLOAD=$(cat <<EOF
+          {
+            "message": "❌ GitHub Workflow Notification: Workflow '${{ github.workflow }}' from repository '${{ github.repository }}' failed. View details at: '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'"
+          }
+          EOF
+          )
+          JSON_PAYLOAD=$(echo $JSON_PAYLOAD | tr -d '\n')
           echo "$JSON_PAYLOAD" > output.json
 
       - name: Debug JSON

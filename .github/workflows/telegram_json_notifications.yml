@@ -18,11 +18,6 @@ jobs:
           JSON_PAYLOAD=$(echo $JSON_PAYLOAD | tr -d '\n')
           echo "$JSON_PAYLOAD" > output.json
 
-      - name: Debug JSON
-        run: |
-          echo "Contents of output.json:"
-          cat output.json
-
       - name: Send JSON
         run: |
           curl -X POST ${{ vars.TELEGRAM_REPORTS_PATH }} \

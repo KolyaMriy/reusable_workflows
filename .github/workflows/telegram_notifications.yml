@@ -13,10 +13,7 @@ jobs:
           to: ${{ vars.TELEGRAM_NOTIFIER_GROUP_ID }}
           token: ${{ vars.NOTIFIER_TELEGRAM_BOT_TOKEN }}
           message: |
-            ❌ GitHub Workflow Failed!
-            
+            ❌ GitHub Workflow Failed.
             **Repository**: [${{ github.repository }}](${{ github.server_url }}/${{ github.repository }})
-            
             **Workflow**: ${{ github.workflow }}
-                        
             **Run details**: [View logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})

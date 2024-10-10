@@ -1,0 +1,22 @@
+name: Telegram notifications
+
+on:
+  workflow_call:
+
+jobs:
+  telegram-notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Telegram notification
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ vars.TELEGRAM_NOTIFIER_GROUP_ID }}
+          token: ${{ vars.NOTIFIER_TELEGRAM_BOT_TOKEN }}
+          message: |
+            ❌ GitHub Workflow Failed!
+            
+            **Repository**: [${{ github.repository }}](${{ github.server_url }}/${{ github.repository }})
+            
+            **Workflow**: ${{ github.workflow }}
+                        
+            **Run details**: [View logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})

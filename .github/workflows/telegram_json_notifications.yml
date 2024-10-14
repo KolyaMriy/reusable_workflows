@@ -11,7 +11,7 @@ jobs:
         run: |
           JSON_PAYLOAD=$(cat <<EOF
           {
-            "message": "❌ GitHub Workflow Notification: Workflow '${{ github.workflow }}' from repository '${{ github.repository }}' failed. View details at: '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'"
+            "message": "❌ Failed: **'${{ github.workflow }}'**\nDetails: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           }
           EOF
           )

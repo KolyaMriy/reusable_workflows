@@ -9,9 +9,10 @@ jobs:
     steps:
       - name: Prepare JSON
         run: |
+          REPO_NAME=$(echo "${{ github.repository }}" | awk -F'/' '{print $2}')
           JSON_PAYLOAD=$(cat <<EOF
           {
-            "message": "❌ Failed: **'${{ github.workflow }}'**\nDetails: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            "message": "❌ Failed: **'${{ github.workflow }} - $REPO_NAME'**\nDetails: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           }
           EOF
           )

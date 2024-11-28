@@ -29,7 +29,7 @@ runs:
     - name: Copy Files
       run: |
         cp environments/${{ inputs.environment }}/firebase_options.dart lib/
-        cp environments/${{ inputs.environment }}/config.json lib/
+        cp environments/${{ inputs.environment }}/config.* lib/
         cp environments/${{ inputs.environment }}/android/google-services.json android/app/
         cp environments/${{ inputs.environment }}/ios/firebase_app_id_file.json ios/
         cp environments/${{ inputs.environment }}/ios/Info.plist ios/Runner

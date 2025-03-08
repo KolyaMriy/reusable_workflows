@@ -11,7 +11,7 @@ runs:
       with:
         channel: stable
         flutter-version: 3.29.0
-
+        
     - name: Run Flutter Test
       run: |
         dart run localizely_sdk:generate
